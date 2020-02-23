@@ -16,7 +16,8 @@ if __name__ == '__main__':
     checkpoint_directory = args.checkpoint_dir
     print(f'main {checkpoint_directory}')
     n_games = 500
-    agent = DQNAgent(gamma=0.99, epsilon=1.0, lr=0.0001,
+    epsilon = 0.1 if args.test else 1.0
+    agent = DQNAgent(gamma=0.99, epsilon=epsilon, lr=0.0001,
                      n_actions=env.action_space.n,
                      input_dims=env.observation_space.shape,
                      batch_size=32, memory_size=40000, epsilon_min=0.1,
