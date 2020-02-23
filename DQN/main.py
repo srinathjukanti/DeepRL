@@ -48,8 +48,8 @@ if __name__ == '__main__':
         avg_score = np.mean(scores[-100:])
 
         print(f'episode {i}, score {score}, '
-                'average score {avg_score}, best score {best_score} '
-                'epsilon {agent.epsilon} steps {n_steps}')
+              f'average score {avg_score}, best score {best_score} '
+              f'epsilon {agent.epsilon} steps {n_steps}')
 
         if avg_score > best_score:
             if not load_checkpoint:
