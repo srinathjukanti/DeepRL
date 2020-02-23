@@ -50,5 +50,4 @@ class DeepQNetwork(nn.Module):
     
     def load_checkpoint(self):
         print('##.....Loading checkpoint.....##')
-        print(self.checkpoint_file)
         self.load_state_dict(T.load(self.checkpoint_file))

@@ -84,7 +84,7 @@ class DDQNAgent():
         indices = np.arange(self.batch_size)
         q_value = q_prediction[indices, actions]
 
-        t_actions = T.argmax(self.q_net(next_states))
+        t_actions = T.argmax(self.q_net(next_states), dim=1)
         target_value = rewards + self.gamma * target_predictions[indices, t_actions]
 
         loss = self.q_net.loss(q_value, target_value).to(self.q_net.device)
