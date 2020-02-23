@@ -11,7 +11,7 @@ class DeepQNetwork(nn.Module):
         self.checkpoint_dir = checkpoint_dir
         self.checkpoint_file = os.path.join(self.checkpoint_dir, name)
 
-        self.conv1 = nn.Conv2d(input_dims, 32, 8, stride=4)
+        self.conv1 = nn.Conv2d(input_dims[0], 32, 8, stride=4)
         self.conv2 = nn.Conv2d(32, 64, 4, stride=2)
         self.conv3 = nn.Conv2d(64, 64, 3, stride=1)
 
