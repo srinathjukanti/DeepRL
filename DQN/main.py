@@ -12,7 +12,7 @@ if __name__ == '__main__':
                      input_dims=env.observation_space.shape,
                      batch_size=32, memory_size=40000, epsilon_min=0.1,
                      replace_target_count=1000, epsilon_decay=1e-5,
-                     checkpoint_dir='models/', algo='DQNAgent',
+                     checkpoint_dir='./models/', algo='DQNAgent',
                      env_name='PongNoFrameskip-v4')
 
     if load_checkpoint:
