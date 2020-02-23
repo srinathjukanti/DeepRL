@@ -4,6 +4,7 @@ from utils import make_env, wrap_env, show_video
 from torch.utils.tensorboard import SummaryWriter
 import argparse
 from pyvirtualdisplay import Display
+import sys
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -36,6 +37,7 @@ if __name__ == '__main__':
         except:
             print(f'Failed to load agent model \n \
                    Please make sure model exists in {checkpoint_directory}')
+            sys.exit()
         finally:
             env.close()
 

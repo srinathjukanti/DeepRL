@@ -4,6 +4,7 @@ from utils import make_env, wrap_env, show_video
 from torch.utils.tensorboard import SummaryWriter
 import argparse
 from pyvirtualdisplay import Display
+import sys
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -30,13 +31,14 @@ if __name__ == '__main__':
                      replace_target_count=1000, epsilon_decay=1e-5,
                      checkpoint_dir=checkpoint_directory, algo='DDQNAgent',
                      env_name='PongNoFrameskip-v4')
-    
+
     if args.test:
         try:
             agent.load_models()
         except:
             print(f'Failed to load agent model \n \
                    Please make sure model exists in {checkpoint_directory}')
+            sys.exit()
         finally:
             env.close()
 
