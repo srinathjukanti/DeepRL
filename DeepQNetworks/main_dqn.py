@@ -2,14 +2,18 @@ import numpy as np
 from dqn_agent import DQNAgent
 from utils import make_env
 from torch.utils.tensorboard import SummaryWriter
-import sys
+import argparse
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--test", help="Test the trained dqn agent")
+    parser.add_argument("checkpoint_dir", help="Checkpoint directory to load and save models")
+    args = parser.parse_args()
+
     env = make_env('PongNoFrameskip-v4')
     writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
-    load_checkpoint = sys.argv[0]
-    checkpoint_directory = sys.argv[1] 
+    checkpoint_directory = args.checkpoint_dir
     print(f'main {checkpoint_directory}')
     n_games = 500
     agent = DQNAgent(gamma=0.99, epsilon=1.0, lr=0.0001,
@@ -19,7 +23,7 @@ if __name__ == '__main__':
                      replace_target_count=1000, epsilon_decay=1e-5,
                      checkpoint_dir=checkpoint_directory, algo='DQNAgent',
                      env_name='PongNoFrameskip-v4')
-    if load_checkpoint:
+    if args.test:
         agent.load_models()
 
     filename = agent.algo + '_' + agent.env_name \
@@ -39,7 +43,7 @@ if __name__ == '__main__':
             observation_, reward, done, info = env.step(action)
             score += reward
 
-            if not load_checkpoint:
+            if not args.test:
                 agent.remember(observation, action, reward, 
                                observation_, int(done))
                 agent.learn()
@@ -60,7 +64,7 @@ if __name__ == '__main__':
         writer.add_scalar('epsilon/n_games', agent.epsilon, i)
 
         if avg_score > best_score:
-            if not load_checkpoint:
+            if not args.test:
                 agent.save_models()
             best_score = avg_score
 
