@@ -15,7 +15,7 @@ class ReplayMemory():
         index = self.memory_counter % self.memory_size
         self.state_memory[index] = state
         self.action_memory[index] = action
-        self.next_state_memory[index] = next_state
+        self.new_state_memory[index] = next_state
         self.dones_memory[index] = done
         self.rewards_memory[index] = reward
         self.memory_counter += 1
@@ -27,7 +27,7 @@ class ReplayMemory():
         states = self.state_memory[batch]
         actions = self.action_memory[batch]
         rewards = self.rewards_memory[batch]
-        next_states = self.next_state_memory[batch]
+        next_states = self.new_state_memory[batch]
         dones = self.dones_memory[batch]
 
         return states, actions, rewards, next_states, dones
