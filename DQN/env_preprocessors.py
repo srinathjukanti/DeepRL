@@ -63,6 +63,7 @@ class StackFrames(gym.ObservationWrapper):
             env.observation_space.high.repeat(repeat, axis=0),
             dtype=np.float32
         )
+        self.repeat = repeat
 
     def reset(self):
         self.stack.clear()
