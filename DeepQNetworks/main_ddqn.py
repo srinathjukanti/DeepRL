@@ -18,6 +18,7 @@ if __name__ == '__main__':
                      checkpoint_dir='/content/DeepRL/DQN/models/', algo='DDQNAgent',
                      env_name='PongNoFrameskip-v4')
     if load_checkpoint:
+        print('##....Loading Saved Model....##')
         agent.load_models()
 
     filename = agent.algo + '_' + agent.env_name \
