@@ -8,7 +8,7 @@ class ReplayMemory():
                                      dtype=np.float32)
         self.new_state_memory = self.state_memory.copy()
         self.action_memory = np.zeros(self.memory_size, dtype=np.int64)
-        self.dones_memory = np.zeros(self.memory_size, dtype=np.uint8)
+        self.dones_memory = np.zeros(self.memory_size, dtype=np.bool_)
         self.rewards_memory = np.zeros(self.memory_size, dtype=np.float32)
 
     def remember(self, state, action, reward, next_state, done):
