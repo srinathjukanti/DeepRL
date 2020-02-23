@@ -1,24 +1,36 @@
 import numpy as np
-from ddqn_agent import DDQNAgent
-from utils import make_env
+from dqn_agent import DDQNAgent
+from utils import make_env, wrap_env, show_video
 from torch.utils.tensorboard import SummaryWriter
-import sys
+import argparse
+from pyvirtualdisplay import Display
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("checkpoint_dir", help="Checkpoint directory to load and save models")
+    parser.add_argument("--test", help="Test the trained dqn agent")
+    parser.add_argument("--render", help="Render the environment")
+    parser.add_argument("--notebook_render", help="Render environment in notebook")
+    args = parser.parse_args()
+
     env = make_env('PongNoFrameskip-v4')
+    if args.render and args.notebook_render:
+        display = Display(visible=0, size=(1400, 900))
+        display.start()
+        env = wrap_env(env)
     writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
-    load_checkpoint = sys.argv[0]
-    checkpoint_directory = sys.argv[1] 
+    checkpoint_directory = args.checkpoint_dir
     n_games = 500
-    agent = DDQNAgent(gamma=0.99, epsilon=1.0, lr=0.0001,
+    epsilon = 0.1 if args.test else 1.0
+    agent = DDQNAgent(gamma=0.99, epsilon=epsilon, lr=0.0001,
                      n_actions=env.action_space.n,
                      input_dims=env.observation_space.shape,
                      batch_size=32, memory_size=40000, epsilon_min=0.1,
                      replace_target_count=1000, epsilon_decay=1e-5,
                      checkpoint_dir=checkpoint_directory, algo='DDQNAgent',
                      env_name='PongNoFrameskip-v4')
-    if load_checkpoint:
+    if args.test:
         agent.load_models()
 
     filename = agent.algo + '_' + agent.env_name \
@@ -34,11 +46,14 @@ if __name__ == '__main__':
         observation = env.reset()
 
         while not done:
+            if args.render:
+                env.render()
+
             action = agent.choose_action(observation)
             observation_, reward, done, info = env.step(action)
             score += reward
 
-            if not load_checkpoint:
+            if not args.test:
                 agent.remember(observation, action, reward, 
                                observation_, int(done))
                 agent.learn()
@@ -59,10 +74,13 @@ if __name__ == '__main__':
         writer.add_scalar('epsilon/n_games', agent.epsilon, i)
 
         if avg_score > best_score:
-            if not load_checkpoint:
+            if not args.test:
                 agent.save_models()
             best_score = avg_score
 
         eps_history.append(agent.epsilon)
+        if args.notebook_render:
+            show_video()
 
+    env.close()
     writer.close()

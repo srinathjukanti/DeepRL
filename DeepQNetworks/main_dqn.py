@@ -15,13 +15,12 @@ if __name__ == '__main__':
 
     env = make_env('PongNoFrameskip-v4')
     if args.render and args.notebook_render:
-        env = wrap_env(env)
         display = Display(visible=0, size=(1400, 900))
         display.start()
+        env = wrap_env(env)
     writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
     checkpoint_directory = args.checkpoint_dir
-    print(f'main {checkpoint_directory}')
     n_games = 500
     epsilon = 0.1 if args.test else 1.0
     agent = DQNAgent(gamma=0.99, epsilon=epsilon, lr=0.0001,
