@@ -36,8 +36,7 @@ if __name__ == '__main__':
         try:
             agent.load_models()
         except:
-            print(f'Failed to load agent model \n \
-                   Please make sure model exists in {checkpoint_directory}')
+            print(f'Agent model not found in {checkpoint_directory}')
             sys.exit()
         finally:
             env.close()
