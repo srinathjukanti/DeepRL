@@ -1,5 +1,5 @@
 import numpy as np
-from dqn_agent import DDQNAgent
+from ddqn_agent import DDQNAgent
 from utils import make_env, wrap_env, show_video
 from torch.utils.tensorboard import SummaryWriter
 import argparse
