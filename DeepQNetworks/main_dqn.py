@@ -6,8 +6,8 @@ import argparse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--test", help="Test the trained dqn agent")
     parser.add_argument("checkpoint_dir", help="Checkpoint directory to load and save models")
+    parser.add_argument("--test", help="Test the trained dqn agent")
     args = parser.parse_args()
 
     env = make_env('PongNoFrameskip-v4')
