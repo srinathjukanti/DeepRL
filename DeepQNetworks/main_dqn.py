@@ -1,6 +1,6 @@
 import numpy as np
 from dqn_agent import DQNAgent
-from utils import make_env
+from utils import make_env, wrap_env, show_video
 from torch.utils.tensorboard import SummaryWriter
 import argparse
 
@@ -8,9 +8,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("checkpoint_dir", help="Checkpoint directory to load and save models")
     parser.add_argument("--test", help="Test the trained dqn agent")
+    parser.add_argument("--render", help="Render the environment")
+    parser.add_argument("--notebook_render", help="Render environment in notebook")
     args = parser.parse_args()
 
     env = make_env('PongNoFrameskip-v4')
+    if args.render and args.notebook_render:
+        env = wrap_env(env)
     writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
     checkpoint_directory = args.checkpoint_dir
@@ -40,6 +44,9 @@ if __name__ == '__main__':
         observation = env.reset()
 
         while not done:
+            if args.render:
+                env.render()
+
             action = agent.choose_action(observation)
             observation_, reward, done, info = env.step(action)
             score += reward
@@ -70,5 +77,8 @@ if __name__ == '__main__':
             best_score = avg_score
 
         eps_history.append(agent.epsilon)
+        if args.notebook_render:
+            show_video()
 
+    env.close()
     writer.close()
