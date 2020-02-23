@@ -26,7 +26,7 @@ class DeepQNetwork(nn.Module):
         self.to(self.device)
 
     def forward(self, state):
-        hidden_state = F.relu(self.conv1(hidden_state ))
+        hidden_state = F.relu(self.conv1(hidden_state))
         hidden_state = F.relu(self.conv2(hidden_state))
         hidden_state = F.relu(self.conv3(hidden_state))
 
