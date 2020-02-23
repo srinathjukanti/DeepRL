@@ -15,7 +15,7 @@ class PreprocessFrame(gym.ObservationWrapper):
         resized_screen = cv2.resize(new_frame, self.shape[1:],
                                 interpolation=cv2.INTER_AREA)
         new_observation = np.array(resized_screen, dtype=np.uint8).reshape(self.shape)
-        new_observation /= 255.0
+        new_observation = new_observation/255.0
 
         return new_observation
 
