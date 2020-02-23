@@ -1,9 +1,11 @@
 import numpy as np
 from dqn_agent import DQNAgent
 from utils import make_env
+from torch.utils.tensorboard import SummaryWriter
 
 if __name__ == '__main__':
     env = make_env('PongNoFrameskip-v4')
+    writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
     load_checkpoint = False
     n_games = 500
@@ -14,7 +16,6 @@ if __name__ == '__main__':
                      replace_target_count=1000, epsilon_decay=1e-5,
                      checkpoint_dir='/content/DeepRL/DQN/models/', algo='DQNAgent',
                      env_name='PongNoFrameskip-v4')
-
     if load_checkpoint:
         agent.load_models()
 
@@ -51,9 +52,15 @@ if __name__ == '__main__':
               f'average score {avg_score}, best score {best_score} '
               f'epsilon {agent.epsilon} steps {n_steps}')
 
+        writer.add_scalar('Scores/n_steps', score, n_steps)
+        writer.add_scalar('Average Scores/n_games', score, n_games)
+        writer.add_scalar('epsilon/n_games', agent.epsilon, n_games)
+
         if avg_score > best_score:
             if not load_checkpoint:
                 agent.save_models()
             best_score = avg_score
 
         eps_history.append(agent.epsilon)
+
+    writer.close()
