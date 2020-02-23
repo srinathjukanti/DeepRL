@@ -5,8 +5,8 @@ from replay_memory import ReplayMemory
 
 class DDQNAgent():
     def __init__(self, gamma, epsilon, lr, n_actions, input_dims,
-                 memory_size, batch_size, algo, env_name, epsilon_min=0.01,
-                 epsilon_decay=5e-7, replace_target_count=1000, checkpoint_dir='models/'):
+                 memory_size, batch_size, algo, env_name, checkpoint_dir,
+                 epsilon_min=0.01, epsilon_decay=5e-7, replace_target_count=1000):
         self.gamma = gamma
         self.epsilon = epsilon
         self.lr = lr

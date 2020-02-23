@@ -9,16 +9,16 @@ if __name__ == '__main__':
     writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
     load_checkpoint = sys.argv[0]
+    checkpoint_directory = sys.argv[1] 
     n_games = 500
     agent = DDQNAgent(gamma=0.99, epsilon=1.0, lr=0.0001,
                      n_actions=env.action_space.n,
                      input_dims=env.observation_space.shape,
                      batch_size=32, memory_size=40000, epsilon_min=0.1,
                      replace_target_count=1000, epsilon_decay=1e-5,
-                     checkpoint_dir='/content/DeepRL/DQN/models/', algo='DDQNAgent',
+                     checkpoint_dir=checkpoint_directory, algo='DDQNAgent',
                      env_name='PongNoFrameskip-v4')
     if load_checkpoint:
-        print('##....Loading Saved Model....##')
         agent.load_models()
 
     filename = agent.algo + '_' + agent.env_name \
