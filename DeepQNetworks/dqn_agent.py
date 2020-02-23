@@ -5,7 +5,7 @@ from replay_memory import ReplayMemory
 
 class DQNAgent():
     def __init__(self, gamma, epsilon, lr, n_actions, input_dims,
-                 memory_size, batch_size, algo, env_name, checkpoint_dir='models/', 
+                 memory_size, batch_size, algo, env_name, checkpoint_dir, 
                  epsilon_min=0.01, epsilon_decay=5e-7, replace_target_count=1000):
         self.gamma = gamma
         self.epsilon = epsilon
@@ -23,6 +23,7 @@ class DQNAgent():
         self.action_space = [i for i in range(self.n_actions)]
         self.learn_step_counter = 0
 
+        print(f'dqnagent {self.checkpoint_dir}')
         self.memory = ReplayMemory(memory_size, input_dims, n_actions)
 
         self.q_net = DeepQNetwork(self.lr, self.n_actions, 

@@ -10,6 +10,7 @@ if __name__ == '__main__':
     best_score = -np.inf
     load_checkpoint = sys.argv[0]
     checkpoint_directory = sys.argv[1] 
+    print(f'main {checkpoint_directory}')
     n_games = 500
     agent = DQNAgent(gamma=0.99, epsilon=1.0, lr=0.0001,
                      n_actions=env.action_space.n,
