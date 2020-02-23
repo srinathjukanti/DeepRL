@@ -3,6 +3,7 @@ from dqn_agent import DQNAgent
 from utils import make_env, wrap_env, show_video
 from torch.utils.tensorboard import SummaryWriter
 import argparse
+from pyvirtualdisplay import Display
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -15,6 +16,8 @@ if __name__ == '__main__':
     env = make_env('PongNoFrameskip-v4')
     if args.render and args.notebook_render:
         env = wrap_env(env)
+        display = Display(visible=0, size=(1400, 900))
+        display.start()
     writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
     checkpoint_directory = args.checkpoint_dir
