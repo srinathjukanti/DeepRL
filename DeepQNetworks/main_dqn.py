@@ -31,7 +31,13 @@ if __name__ == '__main__':
                      checkpoint_dir=checkpoint_directory, algo='DQNAgent',
                      env_name='PongNoFrameskip-v4')
     if args.test:
-        agent.load_models()
+        try:
+            agent.load_models()
+        except:
+            print(f'Failed to load agent model \n \
+                   Please make sure model exists in {checkpoint_directory}')
+        finally:
+            env.close()
 
     filename = agent.algo + '_' + agent.env_name \
                 + '_lr' + str(agent.lr) + '_' + str(n_games) \
