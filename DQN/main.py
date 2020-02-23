@@ -32,21 +32,28 @@ if __name__ == '__main__':
 
         while not done:
             action = agent.choose_action(observation)
-            observation, reward, done, info = env.step(action)
+            observation_, reward, done, info = env.step(action)
             score += reward
 
-            scores.append(score)
-            steps_array.append(n_steps)
+            if not load_checkpoint:
+                agent.remember(observation, action, reward, 
+                               observation_, int(done))
+                agent.learn()
+            observation = observation_
+            n_steps += 1
 
-            avg_score = np.mean(scores[-100:])
+        scores.append(score)
+        steps_array.append(n_steps)
 
-            print(f'episode {i}, score {score} \
-                    average score {avg_score} best score {best_score} \
-                    epsilon {agent.epsilon} steps {n_steps}')
+        avg_score = np.mean(scores[-100:])
 
-            if avg_score > best_score:
-                if not load_checkpoint:
-                    agent.save_models()
-                best_score = avg_score
+        print(f'episode {i}, score {score} \
+                average score {avg_score} best score {best_score} \
+                epsilon {agent.epsilon} steps {n_steps}')
 
-            eps_history.append(agent.epsilon)
+        if avg_score > best_score:
+            if not load_checkpoint:
+                agent.save_models()
+            best_score = avg_score
+
+        eps_history.append(agent.epsilon)
