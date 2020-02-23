@@ -54,9 +54,9 @@ class RepeatActionAndMaxFrame(gym.Wrapper):
 
         return observation
 
-class StackFrame(gym.ObservationWrapper):
+class StackFrames(gym.ObservationWrapper):
     def __init__(self, env, repeat):
-        super(StackFrame, self).__init__(env)
+        super(StackFrames, self).__init__(env)
         self.stack = collections.deque(maxlen=repeat)
         self.observation_space = gym.spaces.Box(
             env.observation_space.low.repeat(repeat, axis=0),
