@@ -1,5 +1,5 @@
 import numpy as np
-from ddqn_agent import DDQNAgent
+from dueling_dqn_agent import DuelingDQNAgent
 from utils import make_env, wrap_env, show_video
 from torch.utils.tensorboard import SummaryWriter
 import argparse
@@ -22,16 +22,15 @@ if __name__ == '__main__':
     writer = SummaryWriter('runs/dqn_pong')
     best_score = -np.inf
     checkpoint_directory = args.checkpoint_dir
-    n_games = 500
+    n_games = 300
     epsilon = 0.1 if args.test else 1.0
-    agent = DDQNAgent(gamma=0.99, epsilon=epsilon, lr=0.0001,
-                     n_actions=env.action_space.n,
-                     input_dims=env.observation_space.shape,
-                     batch_size=32, memory_size=40000, epsilon_min=0.1,
-                     replace_target_count=1000, epsilon_decay=1e-5,
-                     checkpoint_dir=checkpoint_directory, algo='DDQNAgent',
-                     env_name='PongNoFrameskip-v4')
-
+    agent = DuelingDQNAgent(gamma=0.99, epsilon=epsilon, lr=0.0001,
+                            n_actions=env.action_space.n,
+                            input_dims=env.observation_space.shape,
+                            batch_size=32, memory_size=40000, epsilon_min=0.1,
+                            replace_target_count=1000, epsilon_decay=1e-5,
+                            checkpoint_dir=checkpoint_directory, algo='DuelingDQNAgent',
+                            env_name='PongNoFrameskip-v4')
     if args.test:
         try:
             agent.load_models()

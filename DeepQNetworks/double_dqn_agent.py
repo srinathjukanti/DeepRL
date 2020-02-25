@@ -3,9 +3,9 @@ import torch as T
 from deep_q_network import DeepQNetwork
 from replay_memory import ReplayMemory
 
-class DQNAgent():
+class DoubleDQNAgent():
     def __init__(self, gamma, epsilon, lr, n_actions, input_dims,
-                 memory_size, batch_size, algo, env_name, checkpoint_dir, 
+                 memory_size, batch_size, algo, env_name, checkpoint_dir,
                  epsilon_min=0.01, epsilon_decay=5e-7, replace_target_count=1000):
         self.gamma = gamma
         self.epsilon = epsilon
@@ -83,7 +83,9 @@ class DQNAgent():
         
         indices = np.arange(self.batch_size)
         q_value = q_prediction[indices, actions]
-        target_value = rewards + self.gamma * target_predictions.max(dim=1)[0]
+
+        t_actions = T.argmax(self.q_net(next_states), dim=1)
+        target_value = rewards + self.gamma * target_predictions[indices, t_actions]
 
         loss = self.q_net.loss(q_value, target_value).to(self.q_net.device)
         loss.backward()
